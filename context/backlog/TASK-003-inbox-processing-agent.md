@@ -1,9 +1,10 @@
 # TASK-003: Create Inbox Processing Agent
 
-## Status: blocked
+## Status: completed
 ## Priority: high
 ## Size: large
 ## Created: 2026-01-19
+## Completed: 2026-01-19
 
 ## Description
 
@@ -11,12 +12,12 @@ Build a Mastra agent that processes incoming messages from the inbox folder. The
 
 ## Acceptance Criteria
 
-- [ ] Mastra agent definition with appropriate tools
-- [ ] Read and parse inbox messages
-- [ ] Extract YAML frontmatter metadata
-- [ ] Route messages based on content/metadata
-- [ ] Write responses to outbox folder
-- [ ] Handle correspondence chains (reply-to tracking)
+- [x] Mastra agent definition with appropriate tools
+- [x] Read and parse inbox messages
+- [x] Extract YAML frontmatter metadata
+- [x] Route messages based on content/metadata
+- [x] Write responses to outbox folder
+- [x] Handle correspondence chains (reply-to tracking)
 
 ## Base Directory
 
@@ -24,8 +25,8 @@ All implementation work happens in `/code`.
 
 ## Dependencies
 
-- **TASK-001** must be completed (provides configuration schemas)
-- **TASK-002** must be completed (provides FolderWatcher and MessageWriter)
+- **TASK-001** ~~must be completed~~ **COMPLETED** (provides configuration schemas)
+- **TASK-002** ~~must be completed~~ **COMPLETED** (provides FolderWatcher and MessageWriter)
 
 ## Implementation Plan
 

@@ -1,9 +1,10 @@
 # TASK-002: Implement Folder-Watching Service
 
-## Status: ready
+## Status: completed
 ## Priority: high
 ## Size: large
 ## Created: 2026-01-19
+## Completed: 2026-01-19
 
 ## Description
 
@@ -11,11 +12,11 @@ Create a service that watches configured folders for new/changed Markdown files 
 
 ## Acceptance Criteria
 
-- [ ] Watch configured directories for file changes
-- [ ] Parse Markdown files with YAML frontmatter
-- [ ] Emit events when new messages arrive
-- [ ] Handle file creation, modification, deletion
-- [ ] Graceful error handling for malformed files
+- [x] Watch configured directories for file changes
+- [x] Parse Markdown files with YAML frontmatter
+- [x] Emit events when new messages arrive
+- [x] Handle file creation, modification, deletion
+- [x] Graceful error handling for malformed files
 
 ## Base Directory
 

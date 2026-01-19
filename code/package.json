@@ -23,6 +23,8 @@
     "@mastra/loggers": "^1.0.0-beta.4",
     "@mastra/memory": "^1.0.0-beta.13",
     "@mastra/observability": "^1.0.0-beta.12",
+    "chokidar": "^5.0.0",
+    "gray-matter": "^4.0.3",
     "zod": "^4.3.5"
   },
   "devDependencies": {

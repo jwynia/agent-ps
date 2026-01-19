@@ -6,10 +6,12 @@ import { Observability, DefaultExporter, CloudExporter, SensitiveDataFilter } fr
 import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
+import { inboxAgent } from './agents/inbox-agent';
+import { inboxWorkflow } from './workflows/inbox-workflow';
 
 export const mastra = new Mastra({
-  workflows: { weatherWorkflow },
-  agents: { weatherAgent },
+  workflows: { weatherWorkflow, inboxWorkflow },
+  agents: { weatherAgent, inboxAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
   storage: new LibSQLStore({
     id: "mastra-storage",
@@ -48,3 +50,16 @@ export type {
   FrontmatterField,
 } from './schemas/folder-config';
 export { defaultFolderConfig } from './config/folders';
+
+// Message schema exports
+export { messageSchema, folderEventSchema } from './schemas/message';
+export type { Message, FolderEvent } from './schemas/message';
+
+// Service exports
+export { FolderWatcher } from './services/folder-watcher';
+export { MessageWriter } from './services/message-writer';
+export type { WriteMessageOptions } from './services/message-writer';
+export { InboxProcessor } from './services/inbox-processor';
+
+// Inbox tools exports
+export { listInboxTool, readMessageTool, writeResponseTool } from './tools/inbox-tools';

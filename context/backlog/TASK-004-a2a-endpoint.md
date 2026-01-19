@@ -1,6 +1,6 @@
 # TASK-004: Set Up A2A Endpoint
 
-## Status: blocked
+## Status: ready
 ## Priority: medium
 ## Size: medium
 ## Created: 2026-01-19
@@ -23,7 +23,7 @@ All implementation work happens in `/code`.
 
 ## Dependencies
 
-- **TASK-003** must be completed (provides inbox agent and workflow)
+- **TASK-003** ~~must be completed~~ **COMPLETED** (provides inbox agent and workflow)
 
 ## Implementation Plan
 
