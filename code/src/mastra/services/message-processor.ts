@@ -73,7 +73,7 @@ export class MessageProcessor {
       filename,
       createdAt: new Date().toISOString(),
     };
-    updateMessageStatus(status);
+    await updateMessageStatus(status);
 
     try {
       if (!filename) {
@@ -82,7 +82,7 @@ export class MessageProcessor {
 
       // Update status to processing
       status.status = 'processing';
-      updateMessageStatus(status);
+      await updateMessageStatus(status);
 
       // Use router to dispatch to appropriate handler
       const { handler, result } = await this.router.routeMessage(
@@ -97,7 +97,7 @@ export class MessageProcessor {
       status.status = 'completed';
       status.processedAt = new Date().toISOString();
       status.summary = result;
-      updateMessageStatus(status);
+      await updateMessageStatus(status);
 
     } catch (error) {
       console.error(`Error processing message ${message.filePath}:`, error);
@@ -106,7 +106,7 @@ export class MessageProcessor {
       status.status = 'failed';
       status.processedAt = new Date().toISOString();
       status.error = error instanceof Error ? error.message : String(error);
-      updateMessageStatus(status);
+      await updateMessageStatus(status);
     }
   }
 }

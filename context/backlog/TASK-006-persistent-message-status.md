@@ -1,6 +1,6 @@
 # TASK-006: Persistent Message Status Storage
 
-## Status: ready
+## Status: completed
 ## Priority: medium
 ## Size: medium
 ## Created: 2026-01-19
@@ -17,13 +17,13 @@ Currently, message processing status is lost when the server restarts. Persisten
 
 ## Acceptance Criteria
 
-- [ ] Create message_statuses table in LibSQL
-- [ ] Migrate `updateMessageStatus()` to write to DB
-- [ ] Migrate `getMessageStatus()` to read from DB
-- [ ] Migrate `getAllMessageStatuses()` to query from DB
-- [ ] Maintain backward compatibility with existing API
-- [ ] Status survives server restart
-- [ ] Index on status field for efficient filtering
+- [x] Create message_statuses table in LibSQL
+- [x] Migrate `updateMessageStatus()` to write to DB
+- [x] Migrate `getMessageStatus()` to read from DB
+- [x] Migrate `getAllMessageStatuses()` to query from DB
+- [x] Maintain backward compatibility with existing API
+- [x] Status survives server restart
+- [x] Index on status field for efficient filtering
 - [ ] Tests for CRUD operations
 
 ## Base Directory

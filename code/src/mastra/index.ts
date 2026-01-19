@@ -11,6 +11,7 @@ import { messageWorkflow } from './workflows/message-workflow';
 import { messageMcpServer } from './mcp/message-server';
 import { MessageProcessor } from './services/message-processor';
 import { defaultFolderConfig } from './config/folders';
+import { initializeDb } from './storage/db';
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow, messageWorkflow },
@@ -45,10 +46,12 @@ export const mastra = new Mastra({
 // Auto-start message processor when this module loads
 const messageProcessor = new MessageProcessor(defaultFolderConfig, mastra);
 
-// Start the processor (non-blocking)
-messageProcessor.start().catch((error) => {
-  console.error('Failed to start message processor:', error);
-});
+// Initialize database and start the processor (non-blocking)
+initializeDb()
+  .then(() => messageProcessor.start())
+  .catch((error) => {
+    console.error('Failed to start message processor:', error);
+  });
 
 // Folder configuration exports
 export {

@@ -27,7 +27,7 @@ export const getMessageStatusTool = createTool({
     }).optional(),
   }),
   execute: async ({ id }) => {
-    const status = getMessageStatus(id);
+    const status = await getMessageStatus(id);
     if (!status) {
       return { found: false, status: undefined };
     }
@@ -56,7 +56,7 @@ export const listMessageStatusesTool = createTool({
     total: z.number(),
   }),
   execute: async ({ filterStatus, limit }) => {
-    const allStatuses = getAllMessageStatuses(filterStatus);
+    const allStatuses = await getAllMessageStatuses(filterStatus);
     const statuses = allStatuses.slice(0, limit).map(s => ({
       id: s.id,
       status: s.status,
