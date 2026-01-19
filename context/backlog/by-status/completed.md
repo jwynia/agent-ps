@@ -4,4 +4,4 @@ Tasks that have been finished and merged.
 
 ## Tasks
 
-_None yet._
+- [TASK-001: Define Folder Endpoint Configuration Schema](../TASK-001-folder-config-schema.md) - Completed: 2026-01-19

@@ -35,3 +35,16 @@ export const mastra = new Mastra({
     },
   }),
 });
+
+// Folder configuration exports
+export {
+  folderConfigSchema,
+  folderEndpointSchema,
+  frontmatterFieldSchema,
+} from './schemas/folder-config';
+export type {
+  FolderConfig,
+  FolderEndpoint,
+  FrontmatterField,
+} from './schemas/folder-config';
+export { defaultFolderConfig } from './config/folders';

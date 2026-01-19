@@ -4,4 +4,4 @@ Tasks that are ready to be worked on (no blockers).
 
 ## Tasks
 
-- [TASK-001: Define Folder Endpoint Configuration Schema](../TASK-001-folder-config-schema.md) - Priority: high, Size: medium
+- [TASK-002: Implement Folder-Watching Service](../TASK-002-folder-watching-service.md) - Priority: high, Size: large
