@@ -1,19 +1,45 @@
 import chokidar, { type FSWatcher } from 'chokidar';
 import matter from 'gray-matter';
-import { readFile, stat } from 'fs/promises';
+import { readFile, stat, access } from 'fs/promises';
 import { join, relative } from 'path';
 import { EventEmitter } from 'events';
 import type { FolderConfig, FolderEndpoint } from '../schemas/folder-config';
 import type { Message, FolderEvent } from '../schemas/message';
 
+/**
+ * Detect if running in a container environment where fsevents won't work
+ */
+function isContainerEnvironment(): boolean {
+  // Check common container indicators
+  if (process.env.CONTAINER === 'true') return true;
+  if (process.env.DOCKER_CONTAINER === 'true') return true;
+  if (process.env.REMOTE_CONTAINERS === 'true') return true;
+
+  // Running in VS Code devcontainer
+  if (process.env.REMOTE_CONTAINERS_IPC) return true;
+
+  // Check for /.dockerenv file (sync check is fine at startup)
+  try {
+    require('fs').accessSync('/.dockerenv');
+    return true;
+  } catch {
+    // Not in Docker
+  }
+
+  // Default: not a container
+  return false;
+}
+
 export class FolderWatcher extends EventEmitter {
   private config: FolderConfig;
   private watchers: Map<string, FSWatcher> = new Map();
   private isRunning = false;
+  private forcePolling: boolean;
 
   constructor(config: FolderConfig) {
     super();
     this.config = config;
+    this.forcePolling = isContainerEnvironment();
   }
 
   async start(): Promise<void> {
@@ -36,24 +62,47 @@ export class FolderWatcher extends EventEmitter {
 
   private async watchEndpoint(endpoint: FolderEndpoint): Promise<void> {
     const fullPath = join(this.config.rootPath, endpoint.path);
-    const pattern = join(fullPath, endpoint.pattern);
 
-    const watcher = chokidar.watch(pattern, {
+    // Use polling if configured, or if in a container environment
+    const shouldPoll = endpoint.watchMode === 'poll' || this.forcePolling;
+    const pollInterval = endpoint.pollIntervalMs ?? 1000;
+
+    // Watch the directory directly (glob patterns don't work reliably with polling)
+    const watcher = chokidar.watch(fullPath, {
       persistent: true,
-      ignoreInitial: false,
+      ignoreInitial: true,  // Don't process existing files on startup
       awaitWriteFinish: {
         stabilityThreshold: 300,
         pollInterval: 100,
       },
-      usePolling: endpoint.watchMode === 'poll',
-      interval: endpoint.pollIntervalMs,
+      usePolling: shouldPoll,
+      interval: pollInterval,
+      depth: 1,  // Watch immediate children only (no deep nesting)
     });
 
+    // Filter for markdown files in event handlers
+    const isMarkdownFile = (path: string) => path.endsWith('.md');
+
     watcher
-      .on('add', (path) => this.handleFile('created', path, endpoint))
-      .on('change', (path) => this.handleFile('updated', path, endpoint))
-      .on('unlink', (path) => this.handleDelete(path, endpoint))
-      .on('error', (error) => this.emit('error', error));
+      .on('add', (path) => {
+        if (isMarkdownFile(path)) {
+          this.handleFile('created', path, endpoint);
+        }
+      })
+      .on('change', (path) => {
+        if (isMarkdownFile(path)) {
+          this.handleFile('updated', path, endpoint);
+        }
+      })
+      .on('unlink', (path) => {
+        if (isMarkdownFile(path)) {
+          this.handleDelete(path, endpoint);
+        }
+      })
+      .on('error', (error) => this.emit('error', error))
+      .on('ready', () => {
+        console.log(`Watching ${endpoint.id} at ${fullPath} (polling: ${shouldPoll})`);
+      });
 
     this.watchers.set(endpoint.id, watcher);
   }

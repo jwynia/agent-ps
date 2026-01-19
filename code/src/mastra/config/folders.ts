@@ -1,8 +1,23 @@
 import { join } from 'path';
 import type { FolderConfig, FolderEndpoint } from '../schemas/folder-config';
 
+/**
+ * Get the root path for message folders.
+ * Mastra bundles and runs from .mastra/output/, so we need an absolute path.
+ * Uses MESSAGES_ROOT env var, or defaults based on known project structure.
+ */
+function getMessagesRoot(): string {
+  if (process.env.MESSAGES_ROOT) {
+    return process.env.MESSAGES_ROOT;
+  }
+  // In devcontainer, workspace is at /workspaces/agent-ps
+  // This is a reasonable default for development
+  const workspaceRoot = process.env.WORKSPACE_ROOT ?? '/workspaces/agent-ps';
+  return join(workspaceRoot, '.agents/messages');
+}
+
 export const defaultFolderConfig: FolderConfig = {
-  rootPath: '../.agents/messages',
+  rootPath: getMessagesRoot(),
   endpoints: [
     {
       id: 'inbox',
@@ -10,8 +25,8 @@ export const defaultFolderConfig: FolderConfig = {
       pattern: '**/*.md',
       direction: 'inbox',
       requiredFrontmatter: [],
-      watchMode: 'fsevents',
-      pollIntervalMs: 5000,
+      watchMode: 'poll',  // Use polling for cross-platform compatibility
+      pollIntervalMs: 1000,  // 1 second for responsive detection
     },
     {
       id: 'outbox',
@@ -19,8 +34,8 @@ export const defaultFolderConfig: FolderConfig = {
       pattern: '**/*.md',
       direction: 'outbox',
       requiredFrontmatter: [],
-      watchMode: 'fsevents',
-      pollIntervalMs: 5000,
+      watchMode: 'poll',
+      pollIntervalMs: 1000,
     },
     {
       id: 'bugs',
@@ -30,8 +45,8 @@ export const defaultFolderConfig: FolderConfig = {
       requiredFrontmatter: [
         { name: 'severity', type: 'string', required: true, description: 'Bug severity: low, medium, high, critical' },
       ],
-      watchMode: 'fsevents',
-      pollIntervalMs: 5000,
+      watchMode: 'poll',
+      pollIntervalMs: 1000,
     },
     {
       id: 'feature-requests',
@@ -39,8 +54,8 @@ export const defaultFolderConfig: FolderConfig = {
       pattern: '**/*.md',
       direction: 'inbox',
       requiredFrontmatter: [],
-      watchMode: 'fsevents',
-      pollIntervalMs: 5000,
+      watchMode: 'poll',
+      pollIntervalMs: 1000,
     },
   ],
   defaultFrontmatter: [
@@ -66,7 +81,8 @@ export function getEndpointPath(endpointId: string, config: FolderConfig = defau
   if (!endpoint) {
     throw new Error(`Endpoint not found: ${endpointId}`);
   }
-  return join(process.cwd(), config.rootPath, endpoint.path);
+  // rootPath is now absolute, so no need to join with process.cwd()
+  return join(config.rootPath, endpoint.path);
 }
 
 /**
