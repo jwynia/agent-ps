@@ -3,30 +3,32 @@ import { z } from 'zod';
 
 const processMessageStep = createStep({
   id: 'process-message',
-  description: 'Process an incoming inbox message using the inbox agent',
+  description: 'Process an incoming message using the concierge agent',
   inputSchema: z.object({
     filename: z.string().describe('The filename of the message to process'),
+    endpoint: z.string().default('inbox').describe('The endpoint the message came from'),
   }),
   outputSchema: z.object({
     processed: z.boolean(),
     responseId: z.string().optional(),
     summary: z.string(),
+    endpoint: z.string(),
   }),
   execute: async ({ inputData, mastra }) => {
     if (!inputData) {
       throw new Error('Input data not found');
     }
 
-    const agent = mastra?.getAgent('inboxAgent');
+    const agent = mastra?.getAgent('conciergeAgent');
     if (!agent) {
-      throw new Error('Inbox agent not found');
+      throw new Error('Concierge agent not found');
     }
 
     const prompt = `
-Process the inbox message with filename: ${inputData.filename}
+Process the message with filename: ${inputData.filename} from endpoint: ${inputData.endpoint}
 
 Steps:
-1. Read the message using the read-message tool
+1. Read the message using the read-message tool with endpoint: "${inputData.endpoint}"
 2. Analyze its content and intent
 3. If a response is appropriate, write one using the write-response tool
 4. Summarize what action was taken
@@ -40,21 +42,27 @@ Steps:
       processed: true,
       responseId: undefined,
       summary: response.text,
+      endpoint: inputData.endpoint,
     };
   },
 });
 
-export const inboxWorkflow = createWorkflow({
-  id: 'inbox-workflow',
-  description: 'Process an inbox message file and generate an appropriate response',
+export const messageWorkflow = createWorkflow({
+  id: 'message-workflow',
+  description: 'Process a message file from any endpoint and generate an appropriate response',
   inputSchema: z.object({
     filename: z.string().describe('The filename of the message to process'),
+    endpoint: z.string().default('inbox').describe('The endpoint the message came from'),
   }),
   outputSchema: z.object({
     processed: z.boolean(),
     responseId: z.string().optional(),
     summary: z.string(),
+    endpoint: z.string(),
   }),
 }).then(processMessageStep);
 
-inboxWorkflow.commit();
+messageWorkflow.commit();
+
+// Legacy export for backwards compatibility
+export const inboxWorkflow = messageWorkflow;

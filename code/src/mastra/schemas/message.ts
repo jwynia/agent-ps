@@ -5,7 +5,7 @@ export const messageSchema = z.object({
   id: z.string(),
   filePath: z.string(),
   endpointId: z.string(),
-  frontmatter: z.record(z.unknown()),
+  frontmatter: z.record(z.string(), z.unknown()),
   content: z.string(),
   createdAt: z.date(),
   modifiedAt: z.date(),
