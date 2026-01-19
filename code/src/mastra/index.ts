@@ -8,11 +8,13 @@ import { weatherAgent } from './agents/weather-agent';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 import { inboxAgent } from './agents/inbox-agent';
 import { inboxWorkflow } from './workflows/inbox-workflow';
+import { inboxMcpServer } from './mcp/inbox-server';
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow, inboxWorkflow },
   agents: { weatherAgent, inboxAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
+  mcpServers: { inbox: inboxMcpServer },
   storage: new LibSQLStore({
     id: "mastra-storage",
     // stores observability, scores, ... into memory storage, if it needs to persist, change to file:../mastra.db
@@ -63,3 +65,6 @@ export { InboxProcessor } from './services/inbox-processor';
 
 // Inbox tools exports
 export { listInboxTool, readMessageTool, writeResponseTool } from './tools/inbox-tools';
+
+// MCP Server exports
+export { inboxMcpServer } from './mcp/inbox-server';

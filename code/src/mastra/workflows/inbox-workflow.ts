@@ -46,6 +46,7 @@ Steps:
 
 export const inboxWorkflow = createWorkflow({
   id: 'inbox-workflow',
+  description: 'Process an inbox message file and generate an appropriate response',
   inputSchema: z.object({
     filename: z.string().describe('The filename of the message to process'),
   }),

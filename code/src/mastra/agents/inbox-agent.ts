@@ -5,6 +5,7 @@ import { listInboxTool, readMessageTool, writeResponseTool } from '../tools/inbo
 export const inboxAgent = new Agent({
   id: 'inbox-agent',
   name: 'Inbox Processing Agent',
+  description: 'Processes incoming messages from the inbox folder and generates appropriate responses',
   instructions: `
 You are an inbox processing agent that handles incoming messages from other AI agents and users.
 
