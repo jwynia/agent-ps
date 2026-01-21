@@ -74,6 +74,7 @@ These skills are essential for this project's tech stack:
 
 | Skill | Use When | Invocation |
 |-------|----------|------------|
+| `agile-coordinator` | Multiple ready tasks, batch execution, autonomous multi-task work | `/agile-coordinator` |
 | `agile-workflow` | "run workflow", "continue working", "what's next", sprint management | `/agile-workflow` |
 | `github-agile` | GitHub workflow issues, branch strategy, PR templates, issue management | Contextual |
 | `code-review` | Reviewing code for quality, security, maintainability | Contextual |
@@ -131,6 +132,7 @@ Use these **before writing code** to ensure you're solving the right problem:
 
 **Direct invocation** (user-invocable skills):
 ```
+/agile-coordinator
 /agile-workflow
 /mastra-hono
 /typescript-best-practices

@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node ./index.mjs"
+  },
+  "author": "Mastra",
+  "license": "ISC",
+  "dependencies": {
+    "@mastra/core": "1.0.0-beta.23",
+    "@mastra/loggers": "1.0.0-beta.4",
+    "@mastra/libsql": "1.0.0-beta.12",
+    "@mastra/observability": "1.0.0-beta.12",
+    "zod": "latest",
+    "@mastra/memory": "1.0.0-beta.13",
+    "@mastra/evals": "1.0.0-beta.5",
+    "gray-matter": "4.0.3",
+    "@mastra/mcp": "1.0.0-beta.10",
+    "@libsql/client": "0.15.15",
+    "chokidar": "5.0.0",
+    "hono": "4.11.4",
+    "typescript": "5.9.3"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": []
+  }
+}

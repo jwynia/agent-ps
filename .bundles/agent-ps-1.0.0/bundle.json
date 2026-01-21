@@ -1,0 +1,15 @@
+{
+  "name": "agent-ps",
+  "version": "1.0.0",
+  "createdAt": "2026-01-20T04:17:43.875Z",
+  "variant": "minimal",
+  "nodeVersion": ">=22.13.0",
+  "files": [
+    "runtime/",
+    "templates/",
+    "scripts/",
+    "docs/",
+    "bundle.json",
+    "README.md"
+  ]
+}

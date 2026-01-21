@@ -1,0 +1,9 @@
+{
+  "$comment": "Merge these settings into your .devcontainer/devcontainer.json",
+  "containerEnv": {
+    "AGENT_PS_ROOT": "/workspaces/${localWorkspaceFolderBasename}/.agent-ps/runtime",
+    "MESSAGES_ROOT": "/workspaces/${localWorkspaceFolderBasename}/.agent-ps/messages"
+  },
+  "forwardPorts": [4111],
+  "postStartCommand": "bash ${containerWorkspaceFolder}/.agent-ps/scripts/start.sh &"
+}
